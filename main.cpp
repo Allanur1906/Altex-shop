@@ -1,48 +1,139 @@
 #include <iostream>
-#include <array>
+#include <vector>
+#include <string>
+
+class Produs {
+public:
+    std::string nume;
+    double pret;
+
+    Produs() {}
+
+    Produs(std::string nume, double pret) : nume(nume), pret(pret) {}
+};
+
+class CosCumparaturi {
+public:
+    std::vector<Produs> produse;
+
+    void adaugaProdus(const Produs& produs) {
+        produse.push_back(produs);
+    }
+
+    double calculeazaTotal(const std::vector<Produs>& inventar) const {
+        double total = 0.0;
+        for (const auto& produs : produse) {
+            total += produs.pret;
+        }
+        return total;
+    }
+
+    void afiseazaCos(const std::vector<Produs>& inventar) const {
+        std::cout << "Cosul de cumparaturi:\n";
+        for (const auto& produs : produse) {
+            std::cout << produs.nume << " - $" << produs.pret << "\n";
+        }
+        std::cout << "Total: $" << calculeazaTotal(inventar) << "\n";
+    }
+};
+
+class Magazin {
+public:
+    std::vector<Produs> inventar;
+
+    void adaugaProdus(const Produs& produs) {
+        inventar.push_back(produs);
+    }
+
+    void afiseazaInventar() const {
+        std::cout << "Inventar magazin:\n";
+        int index = 1;
+        for (const auto& produs : inventar) {
+            std::cout << index++ << ". " << produs.nume << " - $" << produs.pret << "\n";
+        }
+    }
+
+    const Produs& getProdusDupaNume(const std::string& nume) const {
+        for (const auto& produs : inventar) {
+            if (produs.nume == nume) {
+                return produs;
+            }
+        }
+        throw std::runtime_error("Produsul nu a fost gasit in inventar.");
+    }
+};
+
+void umpleInventar(Magazin& magazin) {
+    magazin.adaugaProdus(Produs("Samsung", 1500));
+    magazin.adaugaProdus(Produs("Redmi", 1200));
+    magazin.adaugaProdus(Produs("Apple", 6000));
+    magazin.adaugaProdus(Produs("HP", 4000));
+    magazin.adaugaProdus(Produs("Lenovo", 3500));
+    magazin.adaugaProdus(Produs("Macbook", 6500));
+    magazin.adaugaProdus(Produs("Husa", 80));
+    magazin.adaugaProdus(Produs("USB cablu", 40));
+    magazin.adaugaProdus(Produs("Casti", 1200));
+    magazin.adaugaProdus(Produs("Sticla de protectie", 50));
+}
 
 int main() {
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
-    /////////////////////////////////////////////////////////////////////////
-    /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
-    /// dați exemple de date de intrare folosind fișierul tastatura.txt
-    /// Trebuie să aveți în fișierul tastatura.txt suficiente date de intrare
-    /// (în formatul impus de voi) astfel încât execuția programului să se încheie.
-    /// De asemenea, trebuie să adăugați în acest fișier date de intrare
-    /// pentru cât mai multe ramuri de execuție.
-    /// Dorim să facem acest lucru pentru a automatiza testarea codului, fără să
-    /// mai pierdem timp de fiecare dată să introducem de la zero aceleași date de intrare.
-    ///
-    /// Pe GitHub Actions (bife), fișierul tastatura.txt este folosit
-    /// pentru a simula date introduse de la tastatură.
-    /// Bifele verifică dacă programul are erori de compilare, erori de memorie și memory leaks.
-    ///
-    /// Dacă nu puneți în tastatura.txt suficiente date de intrare, îmi rezerv dreptul să vă
-    /// testez codul cu ce date de intrare am chef și să nu pun notă dacă găsesc vreun bug.
-    /// Impun această cerință ca să învățați să faceți un demo și să arătați părțile din
-    /// program care merg (și să le evitați pe cele care nu merg).
-    ///
-    /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
-    /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
+    Magazin magazin;
+    umpleInventar(magazin);
+
+    CosCumparaturi cos;
+
+    std::cout << "Bine ati venit la magazinul online!\n";
+
+    while (true) {
+        std::cout << "\n------------------- Meniu -------------------\n";
+        std::cout << "1. Afiseaza inventar magazin\n";
+        std::cout << "2. Adauga produs in cos\n";
+        std::cout << "3. Afiseaza cos\n";
+        std::cout << "4. Checkout\n";
+        std::cout << "5. Iesire\n";
+        std::cout << "--------------------------------------------\n";
+
+        int optiune;
+        std::cout << "Introduceti optiunea: ";
+        std::cin >> optiune;
+
+        switch (optiune) {
+            case 1: {
+                magazin.afiseazaInventar();
+                break;
+            }
+            case 2: {
+                std::string numeProdus;
+                std::cout << "Introduceti numele produsului de adaugat in cos: ";
+                std::cin >> numeProdus;
+                try {
+                    const Produs& produs = magazin.getProdusDupaNume(numeProdus);
+                    cos.adaugaProdus(produs);
+                    std::cout << numeProdus << " adaugat in cos.\n";
+                } catch (const std::runtime_error& e) {
+                    std::cout << e.what() << std::endl;
+                }
+                break;
+            }
+            case 3: {
+                cos.afiseazaCos(magazin.inventar);
+                break;
+            }
+            case 4: {
+                std::cout << "Checkout...\n";
+                cos.afiseazaCos(magazin.inventar);
+                return 0;
+            }
+            case 5: {
+                std::cout << "Iesire...\n";
+                return 0;
+            }
+            default: {
+                std::cout << "Optiune invalida. Va rugam sa introduceti un numar intre 1 si 5.\n";
+                break;
+            }
+        }
     }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
-    ///////////////////////////////////////////////////////////////////////////
-    /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
-    /// alt fișier propriu cu ce alt nume doriți.
-    /// Exemplu:
-    /// std::ifstream fis("date.txt");
-    /// for(int i = 0; i < nr2; ++i)
-    ///     fis >> v2[i];
+
     return 0;
 }
