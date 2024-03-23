@@ -11,10 +11,10 @@ public:
 
     Produs(std::string nume, double pret) : nume(nume), pret(pret) {}
 
-    // Copy constructor
+    
     Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
 
-    // Copy assignment operator
+    
     Produs& operator=(const Produs& other) {
         if (this != &other) {
             nume = other.nume;
@@ -23,7 +23,7 @@ public:
         return *this;
     }
 
-    // Destructor
+    
     ~Produs() {}
 };
 
