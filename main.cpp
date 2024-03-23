@@ -6,7 +6,7 @@ class Produs {
 public:
     std::string nume;
     double pret;
-
+#
     Produs() : nume(""), pret(0.0) {}
 
     Produs(std::string nume, double pret) : nume(nume), pret(pret) {}
