@@ -7,10 +7,30 @@ public:
     std::string nume;
     double pret;
 
-    Produs() {}
+    Produs() : nume(""), pret(0.0) {}
 
     Produs(std::string nume, double pret) : nume(nume), pret(pret) {}
+
+    // Copy constructor
+    Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
+
+    // Copy assignment operator
+    Produs& operator=(const Produs& other) {
+        if (this != &other) {
+            nume = other.nume;
+            pret = other.pret;
+        }
+        return *this;
+    }
+
+    // Destructor
+    ~Produs() {}
 };
+
+std::ostream& operator<<(std::ostream& os, const Produs& produs) {
+    os << "Nume: " << produs.nume << ", Pret: " << produs.pret;
+    return os;
+}
 
 class CosCumparaturi {
 public:
@@ -20,7 +40,7 @@ public:
         produse.push_back(produs);
     }
 
-    double calculeazaTotal(const std::vector<Produs>& inventar) const {
+    double calculeazaTotal() const {
         double total = 0.0;
         for (const auto& produs : produse) {
             total += produs.pret;
@@ -28,12 +48,12 @@ public:
         return total;
     }
 
-    void afiseazaCos(const std::vector<Produs>& inventar) const {
+    void afiseazaCos() const {
         std::cout << "Cosul de cumparaturi:\n";
         for (const auto& produs : produse) {
-            std::cout << produs.nume << " - $" << produs.pret << "\n";
+            std::cout << produs << std::endl;
         }
-        std::cout << "Total: $" << calculeazaTotal(inventar) << "\n";
+        std::cout << "Total: $" << calculeazaTotal() << std::endl;
     }
 };
 
@@ -47,9 +67,8 @@ public:
 
     void afiseazaInventar() const {
         std::cout << "Inventar magazin:\n";
-        int index = 1;
         for (const auto& produs : inventar) {
-            std::cout << index++ << ". " << produs.nume << " - $" << produs.pret << "\n";
+            std::cout << produs << std::endl;
         }
     }
 
@@ -64,16 +83,16 @@ public:
 };
 
 void umpleInventar(Magazin& magazin) {
-    magazin.adaugaProdus(Produs("Samsung", 1500));
-    magazin.adaugaProdus(Produs("Redmi", 1200));
-    magazin.adaugaProdus(Produs("Apple", 6000));
-    magazin.adaugaProdus(Produs("HP", 4000));
-    magazin.adaugaProdus(Produs("Lenovo", 3500));
-    magazin.adaugaProdus(Produs("Macbook", 6500));
-    magazin.adaugaProdus(Produs("Husa", 80));
-    magazin.adaugaProdus(Produs("USB cablu", 40));
-    magazin.adaugaProdus(Produs("Casti", 1200));
-    magazin.adaugaProdus(Produs("Sticla de protectie", 50));
+    magazin.adaugaProdus(Produs("Samsung", 100));
+    magazin.adaugaProdus(Produs("Redmi", 150));
+    magazin.adaugaProdus(Produs("Apple", 1000));
+    magazin.adaugaProdus(Produs("HP", 1000));
+    magazin.adaugaProdus(Produs("Lenovo", 600));
+    magazin.adaugaProdus(Produs("Macbook", 1200));
+    magazin.adaugaProdus(Produs("Husa", 10));
+    magazin.adaugaProdus(Produs("USB cablu", 10));
+    magazin.adaugaProdus(Produs("Casti", 100));
+    magazin.adaugaProdus(Produs("Sticla de protectie", 20));
 }
 
 int main() {
@@ -116,12 +135,12 @@ int main() {
                 break;
             }
             case 3: {
-                cos.afiseazaCos(magazin.inventar);
+                cos.afiseazaCos();
                 break;
             }
             case 4: {
                 std::cout << "Checkout...\n";
-                cos.afiseazaCos(magazin.inventar);
+                cos.afiseazaCos();
                 return 0;
             }
             case 5: {

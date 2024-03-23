@@ -1,4 +1,4 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# Altex shop
 
 ## Cerințe obligatorii 
 
@@ -17,7 +17,7 @@ Nerespectarea duce la nepunctarea proiectului
 ## Tema 1
 
 #### Cerințe
-- [ ] definirea a minim **2-3 clase** care sa interactioneze in cadrul temei alese (fie prin compunere, agregare sau doar sa apeleze metodele celeilalte intr-un mod logic) (5p)
+- [x] definirea a minim **2-3 clase** care sa interactioneze in cadrul temei alese (fie prin compunere, agregare sau doar sa apeleze metodele celeilalte intr-un mod logic) (5p)
   - pentru o clasă:
     - [ ] constructori de inițializare
     - [ ] constructor supraîncărcat
