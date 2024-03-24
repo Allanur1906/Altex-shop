@@ -11,7 +11,13 @@ public:
 
     Produs(std::string nume, double pret) : nume(nume), pret(pret) {}
 
+
     Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
+
+    
+    Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
+
+    
 
     Produs& operator=(const Produs& other) {
         if (this != &other) {
@@ -21,6 +27,10 @@ public:
         return *this;
     }
 
+
+
+    
+ main
     ~Produs() {}
 
 
