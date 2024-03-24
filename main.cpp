@@ -89,7 +89,7 @@ public:
     }
 
 
-    Produs recommendProduct(const CosCumparaturi& cos) const {
+    [[nodiscard]] Produs recommendProduct() const {
         //in  'cos'
         // For demonstration,  the most expensive product in inventory
         double maxPrice = 0.0;
@@ -171,7 +171,7 @@ int main() {
             }
             case 5: {
                 try {
-                    Produs recommendedProdus = magazin.recommendProduct(cos);
+                    Produs recommendedProdus = magazin.recommendProduct();
                     std::cout << "Produs recomandat: " << recommendedProdus << std::endl;
                 } catch (const std::runtime_error &e) {
                     std::cout << e.what() << std::endl;
