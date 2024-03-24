@@ -9,7 +9,7 @@ public:
 
     Produs() : nume(""), pret(0.0) {}
 
-    Produs(const std::string nume, double pret) : nume(nume), pret(pret) {}
+    Produs(const std::string& nume, double pret) : nume(nume), pret(pret) {}
 
     Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
 
