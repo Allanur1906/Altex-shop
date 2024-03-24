@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-using namespace std;
+
 class Produs {
 public:
     std::string nume;
@@ -23,7 +23,7 @@ public:
 
     ~Produs() {}
 
-
+    // Overloaded + operator as member function
     Produs operator+(const Produs& other) const {
         Produs result;
         result.nume = "Combined Products";
@@ -54,16 +54,16 @@ public:
     }
 
     void afiseazaCos() const {
-        cout<<"------------------------------------------\n\n";
-        cout <<"-----------COSUL DE CUMPARATURI-----------\n\n";
+        std::cout << "Cosul de cumparaturi:\n";
         for (const auto& produs : produse) {
             std::cout << produs << std::endl;
         }
         std::cout << "Total: $ " << calculeazaTotal() << std::endl;
-        cout<<"-----------------------------------------\n";
-        cout<<"******MULTUMESSC PENRTU CUMPARATURI******\n";
-}
+        std::cout << "--------------------------------------------\n";
+        std::cout << "******MULTUMESC PENRTU CUMPARATURI******:\n";
+    }
 };
+
 class Magazin {
 public:
     std::vector<Produs> inventar;
@@ -75,7 +75,7 @@ public:
     void afiseazaInventar() const {
         std::cout << "Inventar magazin:\n";
         for (const auto& produs : inventar) {
-            cout << produs << std::endl;
+            std::cout << produs << std::endl;
         }
     }
 
@@ -85,12 +85,13 @@ public:
                 return produs;
             }
         }
-        throw runtime_error("Produsul nu a fost gasit in inventar.");
+        throw std::runtime_error("Produsul nu a fost gasit in inventar.");
     }
 
-
-    Produs recommendProduct(const CosCumparaturi&cos) const {
-
+    // Function to recommend a product based on the shopping cart
+    Produs recommendProduct(const CosCumparaturi& cos) const {
+        //in  'cos'
+        // For demonstration,  the most expensive product in inventory
         double maxPrice = 0.0;
         const Produs* recommendedProdus = nullptr;
         for (const auto& produs : inventar) {
@@ -102,7 +103,7 @@ public:
         if (recommendedProdus)
             return *recommendedProdus;
         else
-            throw runtime_error("Nu s-a putut recomanda niciun produs.");
+            throw std::runtime_error("Nu s-a putut recomanda niciun produs.");
     }
 };
 
@@ -128,18 +129,18 @@ int main() {
     std::cout << "Bine ati venit la magazinul online!\n";
 
     while (true) {
-        cout << "\n------------------- Meniu -------------------\n";
-        cout << "1. Afiseaza inventar magazin\n";
-        cout << "2. Adauga produs in cos\n";
-        cout << "3. Afiseaza cos\n";
-        cout << "4. Checkout\n";
-        cout << "5. Recomanda produs\n";
-        cout << "6. Iesire\n";
-        cout << "--------------------------------------------\n";
+        std::cout << "\n------------------- Meniu -------------------\n";
+        std::cout << "1. Afiseaza inventar magazin\n";
+        std::cout << "2. Adauga produs in cos\n";
+        std::cout << "3. Afiseaza cos\n";
+        std::cout << "4. Checkout\n";
+        std::cout << "5. Recomanda produs\n";
+        std::cout << "6. Iesire\n";
+        std::cout << "--------------------------------------------\n";
 
         int optiune;
-        cout << "Introduceti optiunea: ";
-        cin >> optiune;
+        std::cout << "Introduceti optiunea: ";
+        std::cin >> optiune;
 
         switch (optiune) {
             case 1: {
@@ -147,15 +148,15 @@ int main() {
                 break;
             }
             case 2: {
-                string numeProdus;
-                cout << "Introduceti numele produsului de adaugat in cos: ";
-                cin >> numeProdus;
+                std::string numeProdus;
+                std::cout << "Introduceti numele produsului de adaugat in cos: ";
+                std::cin >> numeProdus;
                 try {
                     const Produs &produs = magazin.getProdusDupaNume(numeProdus);
                     cos.adaugaProdus(produs);
-                    cout << numeProdus << " adaugat in cos.\n";
+                    std::cout << numeProdus << " adaugat in cos.\n";
                 } catch (const std::runtime_error &e) {
-                    cout << e.what() << std::endl;
+                    std::cout << e.what() << std::endl;
                 }
                 break;
             }
@@ -164,25 +165,24 @@ int main() {
                 break;
             }
             case 4: {
-                cout << "Checkout...\n";
+                std::cout << "Checkout...\n";
                 cos.afiseazaCos();
                 return 0;
             }
             case 5: {
                 try {
                     Produs recommendedProdus = magazin.recommendProduct(cos);
-                    cout << "Produs recomandat: " << recommendedProdus << std::endl;
+                    std::cout << "Produs recomandat: " << recommendedProdus << std::endl;
                 } catch (const std::runtime_error &e) {
-                    cout << e.what() << std::endl;
+                    std::cout << e.what() << std::endl;
                 }
                 break;
             }
             case 6: {
-                cout << "Iesire...\n";
+                std::cout << "Iesire...\n";
                 return 0;
             }
             default: {
-
             }
         }
     }
