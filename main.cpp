@@ -89,7 +89,7 @@ public:
     }
 
 
-    Produs recommendProduct(const CosCumparaturi& cos) const {
+    Produs recommendProduct(const CosCumparaturi&cos) const {
 
         double maxPrice = 0.0;
         const Produs* recommendedProdus = nullptr;
