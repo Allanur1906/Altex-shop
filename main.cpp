@@ -3,10 +3,11 @@
 #include <string>
 
 class Produs {
-public:
+private:
     std::string nume;
     double pret;
 
+public:
     Produs() : nume(""), pret(0.0) {}
 
     Produs(const std::string& nume, double pret) : nume(nume), pret(pret) {}
@@ -21,26 +22,49 @@ public:
         return *this;
     }
 
+    double getPrice() const {
+        return pret;
+    }
+
+
+    const std::string & getName() const {
+        return nume;
+    }
+
     ~Produs() {}
 
-    // Overloaded + operator as member function
+//    // Overloaded + operator as member function
     Produs operator+(const Produs& other) const {
         Produs result;
         result.nume = "Combined Products";
         result.pret = this->pret + other.pret;
         return result;
     }
+
+    double operator [](const Produs& other) const {
+        if(other.pret > this->pret){
+            return other.pret;
+        }
+        return this->pret;
+    }
+
+
+    friend bool operator==(const Produs& other,const Produs& another)  {
+        return another.pret == other.pret && another.nume == other.nume;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Produs& produs) {
+        os << "Nume: " << produs.nume << ", Pret: " << produs.pret;
+        return os;
+    }
 };
 
-std::ostream& operator<<(std::ostream& os, const Produs& produs) {
-    os << "Nume: " << produs.nume << ", Pret: " << produs.pret;
-    return os;
-}
+
 
 class CosCumparaturi {
-public:
+private:
     std::vector<Produs> produse;
-
+public:
     void adaugaProdus(const Produs& produs) {
         produse.push_back(produs);
     }
@@ -48,7 +72,7 @@ public:
     double calculeazaTotal() const {
         double total = 0.0;
         for (const auto& produs : produse) {
-            total += produs.pret;
+            total += produs.getPrice();
         }
         return total;
     }
@@ -65,8 +89,9 @@ public:
 };
 
 class Magazin {
-public:
+private:
     std::vector<Produs> inventar;
+public:
 
     void adaugaProdus(const Produs& produs) {
         inventar.push_back(produs);
@@ -81,7 +106,7 @@ public:
 
     const Produs& getProdusDupaNume(const std::string& nume) const {
         for (const auto& produs : inventar) {
-            if (produs.nume == nume) {
+            if (produs.getName() == nume) {
                 return produs;
             }
         }
@@ -95,8 +120,8 @@ public:
         double maxPrice = 0.0;
         const Produs* recommendedProdus = nullptr;
         for (const auto& produs : inventar) {
-            if (produs.pret > maxPrice) {
-                maxPrice = produs.pret;
+            if (produs.getPrice() > maxPrice) {
+                maxPrice = produs.getPrice();
                 recommendedProdus = &produs;
             }
         }
@@ -123,8 +148,7 @@ void umpleInventar(Magazin& magazin) {
 int main() {
     Magazin magazin;
     umpleInventar(magazin);
-
-    CosCumparaturi cos;
+      CosCumparaturi cos;
 
     std::cout << "Bine ati venit la magazinul online!\n";
 
