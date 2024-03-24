@@ -3,18 +3,17 @@
 #include <string>
 
 class Produs {
-public:
+private:
     std::string nume;
     double pret;
 
+public:
     Produs() : nume(""), pret(0.0) {}
 
-    Produs(std::string nume, double pret) : nume(nume), pret(pret) {}
+    Produs(const std::string& nume, double pret) : nume(nume), pret(pret) {}
 
-    
     Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
 
-    
     Produs& operator=(const Produs& other) {
         if (this != &other) {
             nume = other.nume;
@@ -23,19 +22,49 @@ public:
         return *this;
     }
 
-    
+    double getPrice() const {
+        return pret;
+    }
+
+
+    const std::string & getName() const {
+        return nume;
+    }
+
     ~Produs() {}
+
+//    // Overloaded + operator as member function
+    Produs operator+(const Produs& other) const {
+        Produs result;
+        result.nume = "Combined Products";
+        result.pret = this->pret + other.pret;
+        return result;
+    }
+
+    double operator [](const Produs& other) const {
+        if(other.pret > this->pret){
+            return other.pret;
+        }
+        return this->pret;
+    }
+
+
+    friend bool operator==(const Produs& other,const Produs& another)  {
+        return another.pret == other.pret && another.nume == other.nume;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Produs& produs) {
+        os << "Nume: " << produs.nume << ", Pret: " << produs.pret;
+        return os;
+    }
 };
 
-std::ostream& operator<<(std::ostream& os, const Produs& produs) {
-    os << "Nume: " << produs.nume << ", Pret: " << produs.pret;
-    return os;
-}
+
 
 class CosCumparaturi {
-public:
+private:
     std::vector<Produs> produse;
-
+public:
     void adaugaProdus(const Produs& produs) {
         produse.push_back(produs);
     }
@@ -43,7 +72,7 @@ public:
     double calculeazaTotal() const {
         double total = 0.0;
         for (const auto& produs : produse) {
-            total += produs.pret;
+            total += produs.getPrice();
         }
         return total;
     }
@@ -53,13 +82,16 @@ public:
         for (const auto& produs : produse) {
             std::cout << produs << std::endl;
         }
-        std::cout << "Total: $" << calculeazaTotal() << std::endl;
+        std::cout << "Total: $ " << calculeazaTotal() << std::endl;
+        std::cout << "--------------------------------------------\n";
+        std::cout << "******MULTUMESC PENRTU CUMPARATURI******:\n";
     }
 };
 
 class Magazin {
-public:
+private:
     std::vector<Produs> inventar;
+public:
 
     void adaugaProdus(const Produs& produs) {
         inventar.push_back(produs);
@@ -74,11 +106,29 @@ public:
 
     const Produs& getProdusDupaNume(const std::string& nume) const {
         for (const auto& produs : inventar) {
-            if (produs.nume == nume) {
+            if (produs.getName() == nume) {
                 return produs;
             }
         }
         throw std::runtime_error("Produsul nu a fost gasit in inventar.");
+    }
+
+
+    [[nodiscard]] Produs recommendProduct() const {
+        //in  'cos'
+        // For demonstration,  the most expensive product in inventory
+        double maxPrice = 0.0;
+        const Produs* recommendedProdus = nullptr;
+        for (const auto& produs : inventar) {
+            if (produs.getPrice() > maxPrice) {
+                maxPrice = produs.getPrice();
+                recommendedProdus = &produs;
+            }
+        }
+        if (recommendedProdus)
+            return *recommendedProdus;
+        else
+            throw std::runtime_error("Nu s-a putut recomanda niciun produs.");
     }
 };
 
@@ -98,8 +148,7 @@ void umpleInventar(Magazin& magazin) {
 int main() {
     Magazin magazin;
     umpleInventar(magazin);
-
-    CosCumparaturi cos;
+      CosCumparaturi cos;
 
     std::cout << "Bine ati venit la magazinul online!\n";
 
@@ -109,7 +158,8 @@ int main() {
         std::cout << "2. Adauga produs in cos\n";
         std::cout << "3. Afiseaza cos\n";
         std::cout << "4. Checkout\n";
-        std::cout << "5. Iesire\n";
+        std::cout << "5. Recomanda produs\n";
+        std::cout << "6. Iesire\n";
         std::cout << "--------------------------------------------\n";
 
         int optiune;
@@ -126,10 +176,10 @@ int main() {
                 std::cout << "Introduceti numele produsului de adaugat in cos: ";
                 std::cin >> numeProdus;
                 try {
-                    const Produs& produs = magazin.getProdusDupaNume(numeProdus);
+                    const Produs &produs = magazin.getProdusDupaNume(numeProdus);
                     cos.adaugaProdus(produs);
                     std::cout << numeProdus << " adaugat in cos.\n";
-                } catch (const std::runtime_error& e) {
+                } catch (const std::runtime_error &e) {
                     std::cout << e.what() << std::endl;
                 }
                 break;
@@ -144,15 +194,20 @@ int main() {
                 return 0;
             }
             case 5: {
+                try {
+                    Produs recommendedProdus = magazin.recommendProduct();
+                    std::cout << "Produs recomandat: " << recommendedProdus << std::endl;
+                } catch (const std::runtime_error &e) {
+                    std::cout << e.what() << std::endl;
+                }
+                break;
+            }
+            case 6: {
                 std::cout << "Iesire...\n";
                 return 0;
             }
             default: {
-                std::cout << "Optiune invalida. Va rugam sa introduceti un numar intre 1 si 5.\n";
-                break;
             }
         }
     }
-
-    return 0;
-}
+};
