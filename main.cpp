@@ -11,13 +11,7 @@ public:
 
     Produs(std::string nume, double pret) : nume(nume), pret(pret) {}
 
-
     Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
-
-    
-    Produs(const Produs& other) : nume(other.nume), pret(other.pret) {}
-
-    
 
     Produs& operator=(const Produs& other) {
         if (this != &other) {
@@ -27,10 +21,6 @@ public:
         return *this;
     }
 
-
-
-    
- main
     ~Produs() {}
 
 
@@ -71,9 +61,9 @@ public:
         }
         std::cout << "Total: $ " << calculeazaTotal() << std::endl;
         cout<<"-----------------------------------------\n";
-        cout<<"        MULTUMESSC PENRTU CUMPARATURI\n\n";}
+        cout<<"******MULTUMESSC PENRTU CUMPARATURI******\n";
+}
 };
-
 class Magazin {
 public:
     std::vector<Produs> inventar;
