@@ -11,7 +11,7 @@ public:
 class ProductNotFoundException : public MyException {
 public:
     [[nodiscard]] const char* what() const noexcept override {
-        return "Product not found in inventory";
+            return "Product not found in inventory";
     }
 };
 
@@ -139,7 +139,7 @@ public:
     }
 
     void golesteCos() {
-
+        produse.clear();
     }
 };
 
@@ -185,6 +185,19 @@ public:
             delete produs;
         }
     }
+
+    // Downcasting using dynamic_cast
+    Telefon* convertToTelefon(Produs* produs) {
+        return dynamic_cast<Telefon*>(produs);
+    }
+
+    Computer* convertToComputer(Produs* produs) {
+        return dynamic_cast<Computer*>(produs);
+    }
+
+    Gadget* convertToGadget(Produs* produs) {
+        return dynamic_cast<Gadget*>(produs);
+    }
 };
 
 void umpleInventar(Magazin& magazin) {
@@ -227,10 +240,10 @@ int main() {
                 std::cout << "Introduceti numele produsului: ";
                 std::cin >> nume;
                 try {
-                    Produs *produs = magazin.getProdusDupaNume(nume); // Using exception handling (requirement)
+                    Produs *produs = magazin.getProdusDupaNume(nume); // Using exception handling
                     std::cout << "Produs adaugat in cos: " << *produs << std::endl;
                     cos.adaugaProdus(produs);
-                } catch (const MyException &e) { // Using custom exception class (requirement)
+                } catch (const MyException &e) { // Using custom exception class
                     std::cout << e.what() << std::endl;
                 }
                 break;
@@ -255,9 +268,9 @@ int main() {
                 std::cout << "Introduceti numele produsului de cautat: ";
                 std::cin >> numeProdus;
                 try {
-                    Produs *produs = magazin.getProdusDupaNume(numeProdus); // Using exception handling (requirement)
+                    Produs *produs = magazin.getProdusDupaNume(numeProdus); // Using exception handling
                     std::cout << "Produs gasit: " << *produs << std::endl;
-                } catch (const MyException &e) { // Using custom exception class (requirement)
+                } catch (const MyException &e) { // Using custom exception class
                     std::cout << e.what() << std::endl;
                 }
                 break;
@@ -273,3 +286,4 @@ int main() {
 
     return 0;
 }
+////pls
