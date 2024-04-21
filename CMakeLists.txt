@@ -117,7 +117,7 @@ FetchContent_MakeAvailable(googletest)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
+
 
 ###############################################################################
 
@@ -139,7 +139,7 @@ message("Compiler: ${CMAKE_CXX_COMPILER_ID} version ${CMAKE_CXX_COMPILER_VERSION
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /permissive- /wd4244 /wd4267 /wd4996 /external:anglebrackets /external:W0)
 else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
+
 endif()
 
 ###############################################################################
@@ -159,7 +159,7 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 
 # copy binaries to "bin" folder; these are uploaded as artifacts on each release
 # update name in .github/workflows/cmake.yml:29 when changing "bin" name here
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+
 # install(DIRECTORY some_dir1 some_dir2 DESTINATION bin)
 # install(FILES some_file1.txt some_file2.md DESTINATION bin)
 if(APPLE)
@@ -174,6 +174,11 @@ add_executable(
         ${HEADERS}
         ${TESTS}
         ${SOURCES}
+        src/Produs.cpp
+        src/Produs.cpp
+        src/Telefon.cpp
+        src/Gadget.cpp
+        src/Magazin.cpp
 )
 
 target_link_libraries(
